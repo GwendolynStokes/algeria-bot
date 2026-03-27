@@ -23,8 +23,7 @@ def get_latest_url():
     except: pass
     return None
 
-last_published_url = ""
-
+last_published_url = "test_run"
 while True:
     try:
         current_url = get_latest_url()
