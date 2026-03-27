@@ -10,7 +10,7 @@ import urllib3
 # تعطيل تحذيرات الأمان لملاءمة سيرفر الجريدة
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# --- إعداداتك ---
+# --- إعداداتك الخاصة ---
 TOKEN = '8426413584:AAE2NSUD1fgNMO-d6Yuhk-v39IoT78ZzwT8'
 CHAT_ID = '7240947590' 
 bot = telebot.TeleBot(TOKEN)
@@ -40,7 +40,7 @@ def get_latest_from_archive():
         print(f"❌ خطأ في الاتصال بالأرشيف: {e}")
     return None
 
-# اجعلها فارغة في أول مرة ليقوم بنشر آخر عدد موجود حالياً فوراً
+# اتركها فارغة ليقوم البوت بنشر آخر عدد موجود في الأرشيف فوراً كأول تجربة
 last_published_url = "" 
 
 print("🚀 البوت بدأ بمراقبة الأرشيف المباشر 24/7...")
@@ -63,11 +63,11 @@ while True:
             
             # استخراج العناوين باستخدام OCR (المحرك الذي ثبته)
             raw_text = pytesseract.image_to_string(images[0], lang='ara')
-            # تنظيف النص واستخراج السطور الطويلة التي غالباً ما تكون عناوين
+            # تنظيف النص واستخراج السطور الطويلة التي تكون غالباً عناوين
             clean_lines = [l.strip() for l in raw_text.split('\n') if len(l.strip()) > 35]
             summary = "\n• " + "\n• ".join(clean_lines[:6]) 
 
-            # تنسيق المنشور الاحترافي
+            # تنسيق المنشور الاحترافي للقناة
             caption = (
                 f"🚨 **جديد الجريدة الرسمية الجزائرية**\n\n"
                 f"🔹 **أهم العناوين في هذا العدد:**\n{summary}\n\n"
@@ -81,12 +81,12 @@ while True:
             last_published_url = current_url
             print("✅ تم النشر بنجاح!")
             
-            # تنظيف الملفات المؤقتة
+            # تنظيف الملفات المؤقتة من السيرفر
             if os.path.exists("latest.pdf"): os.remove("latest.pdf")
             if os.path.exists("cover.jpg"): os.remove("cover.jpg")
 
     except Exception as e:
         print(f"⚠️ خطأ أثناء الدورة: {e}")
     
-    # فحص الأرشيف كل 20 دقيقة لضمان السرعة القصوى
+    # فحص الأرشيف كل 20 دقيقة (1200 ثانية)
     time.sleep(1200)
