@@ -23,7 +23,8 @@ def get_latest_url():
     except: pass
     return None
 
-last_published_url = "test_run"
+last_published_url = "https://www.joradp.dz/FTP/jo-arabe/2026/A2026001.pdf"
+
 while True:
     try:
         current_url = get_latest_url()
